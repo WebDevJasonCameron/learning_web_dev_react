@@ -1,4 +1,5 @@
 import React, {Fragment, Component} from 'react';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
 import Search from "./components/users/search";
@@ -6,7 +7,7 @@ import Alert from "./components/layout/alert";
 import axios from "axios";
 import './App.css';
 
-class App extends Component {
+class App extends Component{
     state = {
         users: [],
         loading: false,
@@ -41,20 +42,31 @@ class App extends Component {
         const { users, loading} = this.state;
 
         return (
-            <div className="App">
-                <Navbar />
-                <div className="container">
-                    <Alert alert={this.state.alert} />
-                    <Search searchUsers={this.searchUsers}
-                            clearUsers={this.searchUsers}
-                            showClear={users.length > 0}
-                            setAlert={this.setAlert}
-                    />
-                    <Users loading={loading} users={users}
-                    />
-                </div>
+            <Router>
+                <div className="App">
+                    <Navbar />
+                    <div className="container">
+                        <Alert alert={this.state.alert} />
+                        <Switch>
+                            <Route
+                                exact
+                                path='/'
+                                render={props => (
+                                    <Fragment>
+                                        <Search searchUsers={this.searchUsers}
+                                                clearUsers={this.searchUsers}
+                                                showClear={users.length > 0}
+                                                setAlert={this.setAlert}
+                                        />
+                                        <Users loading={loading} users={users}
+                                        />
+                                    </Fragment>
+                            )}/>
+                        </Switch>
 
-            </div>
+                    </div>
+                </div>
+            </Router>
         );
     }
 
