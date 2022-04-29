@@ -1,9 +1,12 @@
-import React, {Fragment, Component} from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import React, { Fragment, Component } from 'react';
+import {
+    BrowserRouter, Router, Routes, Route
+} from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
 import Search from "./components/users/search";
 import Alert from "./components/layout/alert";
+import About from "./components/pages/about";
 import axios from "axios";
 import './App.css';
 
@@ -13,14 +16,6 @@ class App extends Component{
         loading: false,
         alert: null
     }
-
-    // async componentDidMount() {
-    //     this.setState({ loading: true });
-    //
-    //     const res = await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-    //
-    //     this.setState({ users: res.data, loading: false});
-    // }
 
     // Search Github Users
     searchUsers = async (text) => {
@@ -42,12 +37,12 @@ class App extends Component{
         const { users, loading} = this.state;
 
         return (
-            <Router>
+            <BrowserRouter>
                 <div className="App">
                     <Navbar />
                     <div className="container">
                         <Alert alert={this.state.alert} />
-                        <Switch>
+                        <Routes>
                             <Route
                                 exact
                                 path='/'
@@ -58,15 +53,16 @@ class App extends Component{
                                                 showClear={users.length > 0}
                                                 setAlert={this.setAlert}
                                         />
-                                        <Users loading={loading} users={users}
-                                        />
+                                        <Users loading={loading} users={users} />
                                     </Fragment>
-                            )}/>
-                        </Switch>
+                                )}
+                            />
+                            <Route exact path='/about' component={About} />
+                        </Routes>
 
                     </div>
                 </div>
-            </Router>
+            </BrowserRouter>
         );
     }
 
